@@ -5,7 +5,6 @@ C4.5决策树
 # @Time : 2021/3/26 15:05 
 # @Author : LINYANZHEN
 # @File : C45.py
-import pandas as pd
 import numpy as np
 import json
 
@@ -63,10 +62,6 @@ class Tree:
         else:
             tree_dict["condition"] = self.condition
         tree_dict["class_result"] = self.class_result
-        print("son_nodes", type(tree_dict["son_nodes"]))
-        print("feature", type(tree_dict["feature"]))
-        print("condition", type(tree_dict["condition"]))
-        print("class_result", type(tree_dict["class_result"]))
         return tree_dict
 
     def to_json(self):
@@ -183,7 +178,6 @@ def continuous_gain_rate(y, x):
         if best_gainrate < now_gainrate:
             best_gainrate = now_gainrate
             best_point = d[k]
-    # print("最佳分割点：{} 信息增益率为：{}".format(best_point, best_gainrate))
     return best_point, best_gainrate
 
 
@@ -194,7 +188,7 @@ def discrete_con_ent(y, x):
     for i in x_types:
         y_xi = y[x == i]
         p_y_xi = len(y_xi) / len(y)
-        con_entropy += -(p_y_xi * entropy_y(y))
+        con_entropy += -(p_y_xi * entropy_y(y_xi))
     return con_entropy
 
 
@@ -222,7 +216,7 @@ def discrete_gain_rate(y, x):
 
 # 生成C4.5决策树
 def build_decision_tree(dataset, fields):
-    # print("子节点数据集大小：", len(dataset))
+    print("子节点数据集大小：", len(dataset))
     y = dataset["y"]
     if len(set(list(y))) == 1:
         # 已经完全分类

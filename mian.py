@@ -5,26 +5,25 @@
 # @Time : 2021/3/27 23:38 
 # @Author : LINYANZHEN
 # @File : mian.py
-
-import C45
 import RandomForest as rf
 
 if __name__ == '__main__':
     # # 导入数据
     data = rf.load_data("bank-full.csv")
-    # forest_size = 20
-    # clean_data = rf.clean_data(data)
-    # # 分割数据集
-    # datasets = rf.split_dataset(clean_data, forest_size + 1)
-    # # 分开训练集和测试集
-    # train_sets = datasets[:-1]
-    # test_set = datasets[-1]
-    # # 生成随机森林
-    # forest = rf.build_random_forest(train_sets, forest_size)
-    # # 存档
-    # forest.to_json("forest_C45.json")
+    forest_size = 20
+    clean_data = rf.clean_data(data)
+    # 分割数据集
+    datasets = rf.split_dataset(clean_data, forest_size)
+    # 分开训练集和测试集
+    train_sets = datasets
+    # 生成随机森林
+    forest = rf.build_random_forest(train_sets, forest_size)
+    # 存档
+    # forest.to_json("forest_C45_invariable.json") #测试讲特征池里的特征数量限定为8个，效果不佳
+    forest.to_json("forest_C45_variable.json")  # 使用随机数量
     # 读档
-    forest = rf.RandomForest.json_to_forest("forest_C45.json")
+    # forest = rf.RandomForest.json_to_forest("forest_C45_invariable.json")
+    forest = rf.RandomForest.json_to_forest("forest_C45_variable.json")
     # 测试准确率
     count = 0
     default_count = 0
